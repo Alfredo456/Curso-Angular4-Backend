@@ -14,5 +14,11 @@ $app->get("/pruebas",function() use($app, $db){
 $app->get("/probando",function() use($app){
 	echo "OTRO TEXTO CUALQUIERA";
 });
-
+$app->post('/productos',function() use($app,$db)
+{
+	$json = $app->request->post('json');
+	$data = json_decode($json,true);
+	var_dump($json);
+	var_dump($data);
+});
 $app->run();
