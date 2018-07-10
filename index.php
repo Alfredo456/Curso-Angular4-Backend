@@ -12,4 +12,4 @@ $app->get("/probando",function() use($app){
 	echo "OTRO TEXTO CUALQUIERA";
 });
 
-app->run();
+$app->run();
