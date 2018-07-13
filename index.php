@@ -6,6 +6,18 @@ $app = new \Slim\Slim();
 
 $db = new mysqli('localhost','root','','curso_angular4');
 
+//Configuracion de Cabeceras
+
+header('Access-Control-Allow-Origin: *');
+header("Access-Control-Allow-Headers: X-API-KEY, Origin, X-Requested-With, Content-Type, Accept, Access-Control-Request-Method");
+header("Access-Control-Allow-Methods: GET, POST, OPTIONS, PUT, DELETE");
+header("Allow: GET, POST, OPTIONS, PUT, DELETE");
+$method = $_SERVER['REQUEST_METHOD'];
+if($method == "OPTIONS") {
+    die();
+}
+
+
 $app->get("/pruebas",function() use($app, $db){
 	echo "Hola mundo desde Slim PHP";
 	//var_dump($db);
@@ -103,8 +115,13 @@ $app->post('/update-producto/:id',function($id) use($app,$db)
 
 	$sql ="UPDATE productos SET ".
 	"nombre = '{$data['nombre']}',".
-	"descripcion = '{$data['descripcion']}',".
-	"precio = '{$data['precio']}' WHERE id = {$id}";
+	"descripcion = '{$data['descripcion']}', ";
+
+	if(isset($data["imagen"])){
+		$sql .= "imagen = '{$data["imagen"]}',";
+	}
+
+	$sql .= "precio = '{$data['precio']}' WHERE id = {$id}";
 
 	$query = $db->query($sql);
 
@@ -154,8 +171,9 @@ $app->post('/upload-file',function() use($app, $db){
 		{
 			$result = array(
 				'status'=> 'success',
-				'code'=> 200,
-				'message'=>'El Archivo se ha subido'
+				'code'=> 200, 
+				'message'=>'El Archivo se ha subido',
+				'filename'=> $file_name
 			);
 		}
 
